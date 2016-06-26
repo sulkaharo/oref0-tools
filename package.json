@@ -1,0 +1,49 @@
+{
+  "name": "oref0-tools",
+  "version": "0.1.0",
+  "description": "openaps oref0 helper tools",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sulkaharo/oref0-tools.git"
+  },
+  "keywords": [
+    "openaps"
+  ],
+  "author": "Sulka Haro",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sulkaharo/oref0-tools/issues"
+  },
+  "bin": {
+    "oref0-mm-format-ns-treatments": "./bin/oref0-mm-format-ns-treatments.js"
+  },
+  "homepage": "https://github.com/sulkaharo/oref0-tools",
+  "dependencies": {
+    "share2nightscout-bridge": "^0.1.5",
+    "timezone": "0.0.47",
+    "yargs": "~4.3.2",
+	"lodash": "^3.9.1",
+    "oref0": "^0.2.0",
+    "moment": "2.10.6"
+  },
+  "devDependencies": {
+	"istanbul": "~0.3.5",
+    "mocha": "^2.3.3",
+    "should": "^7.1.0"
+  },
+  "config": {
+    "blanket": {
+      "pattern": [
+        "bin",
+        "lib",
+        "tests"
+      ],
+      "data-cover-never": [
+        "node_modules"
+      ]
+    }
+  }
+}
