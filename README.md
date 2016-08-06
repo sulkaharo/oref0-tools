@@ -20,6 +20,6 @@ Usage:
 
 Available commands:
 
-insulincorrections returns average number of insulin corrections given / week. Data is provided for both the entire 24 hour period as well as averages for day and night time (treatment events where insulin > 0 and carbs = 0).
+`insulincorrections`returns average number of insulin corrections given / week. Data is provided for both the entire 24 hour period as well as averages for day and night time (treatment events where insulin > 0 and carbs = 0).
 
-carbcorrections is similar to insulincorrections, but for carb corrections (treatment events where carbs > 0 and insulin == 0)
+`carbcorrections` is similar to insulincorrections, but for carb corrections (treatment events where carbs > 0 and insulin == 0)
