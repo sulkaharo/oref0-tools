@@ -8,6 +8,7 @@ var json2csv = require('json2csv');
 /// TREATMENTS STATS
 
 var treatmentsProcessors = {};
+var runtimeInfo = {};
 
 treatmentsProcessors.mapper = function map_treatments() {
 	if (!isNaN(this.insulin) && Number(this.insulin) > 0) return;
@@ -116,7 +117,6 @@ var argv = require('yargs')
     .global(['c','u'])
     .command('insulincorrections', 'Insulin correction stats', {}, function (argv) {
 //      console.log('running insulin correction stats');
-      //var fieldmappings = ['_id','value.sum','value.avg','value.treatmentsPerDay'];
       
       var fieldmappings = [
       	{label: 'week', value: function(row) { return row._id.split('/')[0];} },
@@ -126,11 +126,15 @@ var argv = require('yargs')
       	{label: 'average_carb_corrections_per_day', value: function(row) { return row.value.treatmentsPerDay.toFixed(2);} }
       	];
       
-      runStats(argv,treatmentsProcessors,fieldmappings);
+      runtimeInfo.argv = argv;
+      runtimeInfo.processors = treatmentsProcessors;
+      runtimeInfo.fieldmappings = fieldmappings;
+      
+      runStats(runtimeInfo);
     })
     .command('carbcorrections', 'Carb correction stats', {}, function (argv) {
 //      console.log('running insulin correction stats');
-//      var fieldmappings = ['_id','value.sum','value.avg','value.treatmentsPerDay'];
+
       var fieldmappings = [
       	{label: 'week', value: function(row) { return row._id.split('/')[0];} },
       	{label: 'timeofday', value: function(row) { return row._id.split('/')[1];}},
@@ -146,10 +150,12 @@ var argv = require('yargs')
 
 
 
-function getConnection(argv)
+function getConnection()
 {
 //	console.log("Opening MongoDB connection");
 	var collections = [];
+	
+	var argv = runtimeInfo.argv;
 	
 	if (!argv.c) { argv.c = "treatments"; }
 	collections[0] = argv.c;
@@ -157,63 +163,51 @@ function getConnection(argv)
 	return mongojs(argv.u, collections);
 }    
 
-function dumpCollectionAndExit(collectionPointer,fields)
+function dumpCollectionAndExit()
 {
 
-//console.log("Output results");
-
-collectionPointer.find(function(err,results) {
+	runtimeInfo.tempCollection.find(function (err,results) {
 
 	try {
-	  var result = json2csv({ data: results, fields: fields });
-	  console.log(result);
+		var result = json2csv({ data: results, fields: runtimeInfo.fieldmappings });
+		console.log(result);
 	} catch (err) {
  	 // Errors are thrown for bad options, or if the data is empty and no fields are provided. 
  	 // Be sure to provide fields if it is possible that your data array will be empty. 
- 	 console.error(err);
+ 		console.error(err);
 	}
 
-	collectionPointer.drop();
+	runtimeInfo.tempCollection.drop();
 	
 	process.exit();
 });
 
 }
 
-function runMapReduceAndDump(processors,sourceCollection,targetCollectionName,db,fieldmappings)
+function runMapReduceAndDump()
 {
 
-	var tempcollection = db.collection(targetCollectionName);
+	runtimeInfo.tempCollection = runtimeInfo.db.collection(runtimeInfo.tempCollectionName);
 
-//	console.log("Running map / reduce");
-
-	sourceCollection.mapReduce(
-		processors.mapper,
-		processors.reducer,
+	runtimeInfo.sourceCollection.mapReduce(
+		runtimeInfo.processors.mapper,
+		runtimeInfo.processors.reducer,
         {
-			out: { merge: targetCollectionName },
-			finalize: processors.finalizer
+			out: { merge: runtimeInfo.tempCollectionName },
+			finalize: runtimeInfo.processors.finalizer
 		},
 		function mrDone()
 			{
-				dumpCollectionAndExit(tempcollection,fieldmappings);
+				dumpCollectionAndExit(runtimeInfo);
 			}
 		);
 }
 
-function getTempCollection(argv,processors,fieldmappings,callback)
+function runStats()
 {
-	var db = getConnection(argv);
-	var targetCollection = db.collection(argv.c);
-	var tempCollectionName = String(uuid.v1());
-	db.createCollection(tempCollectionName,{}, callback(db,tempCollectionName,targetCollection,processors));
+	var db = getConnection(runtimeInfo.argv);
+	runtimeInfo.db = db;
+	runtimeInfo.sourceCollection = db.collection(runtimeInfo.argv.c);
+	runtimeInfo.tempCollectionName = String(uuid.v1());
+	db.createCollection(runtimeInfo.tempCollectionName, {}, runMapReduceAndDump);
 }
-
-function runStats(argv, processors, fieldmappings)
-{
-	getTempCollection(argv,processors,fieldmappings,function(db,tempCollectionName,targetCollection,processors)
-	{
-		runMapReduceAndDump(processors,targetCollection,tempCollectionName,db,fieldmappings);
-
-	});
-};
