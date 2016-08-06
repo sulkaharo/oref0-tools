@@ -22,15 +22,18 @@
   },
   "homepage": "https://github.com/sulkaharo/oref0-tools",
   "dependencies": {
+    "json2csv": "^3.6.2",
+    "lodash": "^3.9.1",
+    "moment": "2.10.6",
+    "mongojs": "2.4.0",
+    "oref0": "^0.2.0",
     "share2nightscout-bridge": "^0.1.5",
     "timezone": "0.0.47",
-    "yargs": "~4.3.2",
-	"lodash": "^3.9.1",
-    "oref0": "^0.2.0",
-    "moment": "2.10.6"
+    "uuid": "^2.0.2",
+    "yargs": "4.8.1"
   },
   "devDependencies": {
-	"istanbul": "~0.3.5",
+    "istanbul": "~0.3.5",
     "mocha": "^2.3.3",
     "should": "^7.1.0"
   },
