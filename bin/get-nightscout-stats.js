@@ -115,7 +115,7 @@ var argv = require('yargs')
     .demand(['c','u'])
     .global(['c','u'])
     .command('insulincorrections', 'Insulin correction stats', {}, function (argv) {
-      console.log('running insulin correction stats');
+//      console.log('running insulin correction stats');
       //var fieldmappings = ['_id','value.sum','value.avg','value.treatmentsPerDay'];
       
       var fieldmappings = [
@@ -129,7 +129,7 @@ var argv = require('yargs')
       runStats(argv,treatmentsProcessors,fieldmappings);
     })
     .command('carbcorrections', 'Carb correction stats', {}, function (argv) {
-      console.log('running insulin correction stats');
+//      console.log('running insulin correction stats');
 //      var fieldmappings = ['_id','value.sum','value.avg','value.treatmentsPerDay'];
       var fieldmappings = [
       	{label: 'week', value: function(row) { return row._id.split('/')[0];} },
@@ -148,7 +148,7 @@ var argv = require('yargs')
 
 function getConnection(argv)
 {
-	console.log("Opening MongoDB connection");
+//	console.log("Opening MongoDB connection");
 	var collections = [];
 	
 	if (!argv.c) { argv.c = "treatments"; }
@@ -185,7 +185,7 @@ function runMapReduceAndDump(processors,sourceCollection,targetCollectionName,db
 
 	var tempcollection = db.collection(targetCollectionName);
 
-	console.log("Running map / reduce");
+//	console.log("Running map / reduce");
 
 	sourceCollection.mapReduce(
 		processors.mapper,
