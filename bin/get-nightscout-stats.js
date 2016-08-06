@@ -129,8 +129,7 @@ var argv = require('yargs')
       runtimeInfo.argv = argv;
       runtimeInfo.processors = treatmentsProcessors;
       runtimeInfo.fieldmappings = fieldmappings;
-      
-      runStats(runtimeInfo);
+      runStats();
     })
     .command('carbcorrections', 'Carb correction stats', {}, function (argv) {
 //      console.log('running insulin correction stats');
@@ -143,8 +142,10 @@ var argv = require('yargs')
       	{label: 'average_carb_corrections_per_day', value: function(row) { return row.value.treatmentsPerDay.toFixed(2);} }
       	];
       
-
-      runStats(argv,carbCorrectionsProcessors,fieldmappings);
+      runtimeInfo.argv = argv;
+      runtimeInfo.processors = carbCorrectionsProcessors;
+      runtimeInfo.fieldmappings = fieldmappings;
+      runStats();
     })
     .argv;
 
