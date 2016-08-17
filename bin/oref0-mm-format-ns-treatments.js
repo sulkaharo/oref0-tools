@@ -159,7 +159,7 @@ if (!module.parent) {
 			if (isMMOLevent(n)) { n.units = 'mmol';} else { n.units = 'mgdl'; }
 		}
 		
-  		if (n._type == 'CalBGForPH' || n._type == 'BGReceived') { n.eventType = 'BG Check'; this.glucose = this.amount; }
+  		if (n._type == 'CalBGForPH' || n._type == 'BGReceived') { n.eventType = 'BG Check'; this.glucose = (Number(this.amount) / 18).toFixed(1); }
   		if (n.glucose && !n.glucoseType && n.glucose > 0) { n.glucoseType = n.enteredBy; }
   		n.eventType = (n.eventType ? n.eventType : 'Note');
   		if (n.eventType == 'Note') { n.notes = n._type + pump_model_data + (n.notes ? n.notes : '');}
