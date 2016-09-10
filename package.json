@@ -18,7 +18,8 @@
     "url": "https://github.com/sulkaharo/oref0-tools/issues"
   },
   "bin": {
-    "oref0-mm-format-ns-treatments": "./bin/oref0-mm-format-ns-treatments.js"
+    "oref0-mm-format-ns-treatments": "./bin/oref0-mm-format-ns-treatments.js",
+    "openaps_check_network":"./bin/check_network.sh"
   },
   "homepage": "https://github.com/sulkaharo/oref0-tools",
   "dependencies": {
