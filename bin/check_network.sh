@@ -13,7 +13,6 @@ fi
 COUNTER=$[$(cat $TEMPFILE) + 1]
 
 if test COUNTER = 4; then
-    sudo -s <<EOF
     shutdown -r now
 fi
 
@@ -21,7 +20,6 @@ fi
 if [ $? -ge 1 ] ; then
     echo "Network connection down! Attempting reconnection, count $COUNTER"
     echo $COUNTER > $TEMPFILE
-    sudo -s <<EOF
     /sbin/ifdown $OPENAPS_PORT
     /bin/sleep 5
     /sbin/ifup --force $OPENAPS_PORT
