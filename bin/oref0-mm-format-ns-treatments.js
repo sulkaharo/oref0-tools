@@ -148,22 +148,23 @@ if (!module.parent) {
 
 		n.created_at = n.created_at ? n.created_at : n.timestamp;
   		n.enteredBy = 'openaps://medtronic/' + pump_model_data;
-  		if (n._type == "Bolus" && n.amount && !n.insulin) { this.eventType = 'Correction Bolus'; n.insulin = n.amount;}
+  		if (n._type == "Bolus" && n.amount && !n.insulin) { n.eventType = 'Correction Bolus'; n.insulin = n.amount;}
   		if (n.carb_input && !n.carbs) {n.carbs = n.carb_input;}
   		if (n.duration == 0) { delete n.duration; }
   		if (n.bg == 0) { delete n.bg; }
   		if (n.carbs == 0) { delete n.carbs; }
   		if (n.glucose == 0) { delete n.glucose; }
-		if (n.bg && !n.glucose) { n.glucose = n.bg; }  // everything from Decocare should be in mg/dl
+		if (n.bg && !n.glucose) { n.glucose = n.bg; n.mgb = n.bg; }  // everything from Decocare should be in mg/dl
 		if ((n.bg || n.glucose) && !n.units) {
 			if (isMMOLevent(n)) { n.units = 'mmol';} else { n.units = 'mgdl'; }
 		}
 		
   		if (n._type == 'CalBGForPH' || n._type == 'BGReceived') {
   			n.eventType = 'BG Check';
-  			n.glucose = (Number(this.amount) / 18).toFixed(1);
+  			//n.glucose = (Number(n.amount) / 18).toFixed(1);
   			n.bg = n.glucose;
-  			n.units = 'mmol';
+  			n.mgb = n.glucose;
+  			n.units = 'mgdl';
   		}
   			
   		if (n.glucose && !n.glucoseType && n.glucose > 0) { n.glucoseType = n.enteredBy; }
