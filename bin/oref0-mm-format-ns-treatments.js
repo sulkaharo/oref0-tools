@@ -159,11 +159,20 @@ if (!module.parent) {
 			if (isMMOLevent(n)) { n.units = 'mmol';} else { n.units = 'mgdl'; }
 		}
 		
-  		if (n._type == 'CalBGForPH' || n._type == 'BGReceived') {
+		// CalBGForPH parsing broken in decocare
+		
+		if (n._type == 'CalBGForPH') {
+			n.eventType = 'BG Check';
+			n.amount = (Number(n.amount) / 10).toFixed(1);
+			n.bg = n.amount;
+			n.units = 'mmol';
+		}
+		
+  		if (n._type == 'BGReceived') {
   			n.eventType = 'BG Check';
   			//n.glucose = (Number(n.amount) / 18).toFixed(1);
   			n.bg = n.glucose;
-  			n.mgb = n.glucose;
+  			n.mbg = n.glucose;
   			n.units = 'mgdl';
   		}
   			
