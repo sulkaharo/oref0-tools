@@ -26,5 +26,5 @@ Available commands:
 
 `carbcorrections` is similar to insulincorrections, but for carb corrections (treatment events where carbs > 0 and insulin == 0)
 
-`glucose2` exports the weekly glucose distribution numbers as shown in Nightscout distribution statistics
+`glucose2` exports the weekly glucose distribution numbers as shown in Nightscout distribution statistics; needs to be pointed to the collection that contains your gluose data
 
