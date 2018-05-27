@@ -19,19 +19,19 @@
   },
   "bin": {
     "oref0-mm-format-ns-treatments": "./bin/oref0-mm-format-ns-treatments.js",
-    "openaps_check_network":"./bin/check_network.sh",
-    "openaps_run_mmtune":"./bin/run_mmtune.sh"
+    "openaps_check_network": "./bin/check_network.sh",
+    "openaps_run_mmtune": "./bin/run_mmtune.sh"
   },
   "homepage": "https://github.com/sulkaharo/oref0-tools",
   "dependencies": {
-    "json2csv": "^3.6.2",
+    "json2csv": "^3.11.5",
     "lodash": "^3.9.1",
-    "moment": "2.10.6",
+    "moment": "2.22.1",
     "mongojs": "2.4.0",
     "oref0": "^0.2.0",
     "share2nightscout-bridge": "^0.1.5",
     "timezone": "0.0.47",
-    "uuid": "^2.0.2",
+    "uuid": "^2.0.3",
     "yargs": "4.8.1"
   },
   "devDependencies": {
